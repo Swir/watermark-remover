@@ -1,68 +1,90 @@
-<h1 align="center">🎥 Watermark Remover Pro by Swir</h1>
+<div align="center">
 
-<p align="center">
-  <img src="https://img.shields.io/badge/status-stable-success?style=flat-square" alt="Status">
-  <img src="https://img.shields.io/badge/python-3.8+-blue.svg?style=flat-square" alt="Python Version">
-  <img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square" alt="License">
-</p>
+# 🎥 Video Cleanup & Inpainting Tool
+
+### Desktop Video Restoration Utility with Manual Masking, Inpainting & Batch Processing
+
+**Python • OpenCV • FFmpeg • ttkbootstrap • Inpainting • Video Restoration**
+
+![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white)
+![OpenCV](https://img.shields.io/badge/Vision-OpenCV-5C3EE8?logo=opencv&logoColor=white)
+![FFmpeg](https://img.shields.io/badge/Video-FFmpeg-007808?logo=ffmpeg&logoColor=white)
+![GUI](https://img.shields.io/badge/GUI-ttkbootstrap-8A2BE2)
+![Use](https://img.shields.io/badge/Use-Own%20%2F%20Authorized%20Media-success)
+
+</div>
 
 ---
 
-## 🌍 Language / Język
-<details>
-<summary>🇬🇧 English</summary>
+## 🚀 About
 
-### 📌 Description
-**Watermark Remover Pro** is an advanced desktop application to remove watermarks from video files. Featuring support for various inpainting algorithms, manual area selection, and batch processing, it makes cleaning videos quick and effective.
+This project is a desktop video cleanup and restoration utility for removing **unwanted visual overlays or damaged regions from video you own or are authorized to edit**. It combines manual region selection with OpenCV inpainting methods and optional post-processing controls.
 
-### 🚀 Features
-- GUI built with `ttkbootstrap` for a modern look.
-- Manual and automatic watermark area selection.
-- Supports: Telea, Navier-Stokes, and adaptive blend method.
-- Batch processing of multiple files.
-- Live preview during processing.
-- Optional post-processing: sharpening, denoising, color correction.
+The application can process multiple files, preview the selected region and apply Telea, Navier-Stokes or adaptive blending-style cleanup workflows.
 
-### ⚙️ Requirements
-- Python 3.8 or newer
-- FFmpeg (must be installed and added to PATH)
-- Required Python packages:
+It is designed for users searching for a **video inpainting tool**, **OpenCV video restoration GUI**, **video object cleanup Python**, **batch video cleanup app** or a desktop utility for restoring authorized footage.
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---|---|
+| 🎯 Manual region selection | Choose the area that should be reconstructed |
+| 🧠 Inpainting algorithms | Telea and Navier-Stokes based processing |
+| 🔀 Adaptive cleanup | Additional blend-oriented processing mode |
+| 📚 Batch processing | Process multiple video files |
+| 👁️ Live preview | Review the target region during setup/processing |
+| ✨ Sharpening | Optional post-processing |
+| 🧹 Denoising | Reduce visual noise where appropriate |
+| 🎨 Color correction | Optional output adjustment |
+| 🎬 FFmpeg workflow | Uses FFmpeg alongside Python image processing |
+
+---
+
+## 📋 Requirements
+
+- Python 3.8+
+- FFmpeg available in `PATH`
+
+Install Python dependencies:
+
 ```bash
 pip install opencv-python numpy pillow ttkbootstrap
 ```
 
-### ▶️ How to Run
+---
+
+## ▶️ Run
+
 ```bash
-python watermark remover.py
+git clone https://github.com/Swir/watermark-remover.git
+cd watermark-remover
+python "watermark remover.py"
 ```
 
-</details>
+---
 
-<details>
-<summary>🇵🇱 Polski</summary>
+## 🔍 Discoverability
 
-### 📌 Opis
-**Watermark Remover Pro** to zaawansowana aplikacja desktopowa do usuwania znaków wodnych z plików wideo. Dzięki wsparciu dla wielu metod inpaintingu, ręcznemu wyborowi obszarów oraz wsadowemu przetwarzaniu — pozwala z łatwością usunąć niechciane elementy z nagrań.
+`video inpainting python` • `opencv video restoration` • `video cleanup tool` • `remove unwanted overlay from own video` • `python video repair gui` • `batch video inpainting` • `ffmpeg opencv video tool` • `video object cleanup`
 
-### 🚀 Funkcje
-- Graficzny interfejs użytkownika (GUI) oparty na `ttkbootstrap`.
-- Ręczne i automatyczne wykrywanie obszarów znaków wodnych.
-- Wsparcie dla metod: Telea, Navier-Stokes, miks adaptacyjny.
-- Przetwarzanie wielu plików (tryb wsadowy).
-- Podgląd wideo podczas przetwarzania.
-- Dodatkowe opcje: wyostrzanie, redukcja szumów, korekcja kolorów.
+---
 
-### ⚙️ Wymagania
-- Python 3.8 lub nowszy
-- FFmpeg (musi być zainstalowany i dodany do PATH)
-- Wymagane biblioteki:
-```bash
-pip install opencv-python numpy pillow ttkbootstrap
-```
+## ⚖️ Responsible Use
 
-### ▶️ Uruchomienie
-```bash
-python watermark remover.py
-```
+Use this project only on media you own or have permission to modify. Do not use it to remove ownership, attribution, provenance or rights-management marks from third-party content in ways that violate copyright, licensing or platform rules.
 
-</details>
+---
+
+## 👨‍💻 Author
+
+Developed by **Swir** — [@Swir](https://github.com/Swir)
+
+<div align="center">
+
+### 🎥 Select the region • Restore the frame • Process the video
+
+⭐ **Star the repository if it helps with legitimate video restoration!**
+
+</div>
