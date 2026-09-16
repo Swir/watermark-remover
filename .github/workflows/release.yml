@@ -1,78 +1,74 @@
-name: Build and Release
+name: Windows Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: Release tag (for example v1.0.0)
-        required: true
-        default: v1.0.0
   push:
-    tags:
-      - "v*"
-    branches:
-      - main
-    paths:
-      - ".github/workflows/release.yml"
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   windows-release:
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[release]')
     runs-on: windows-latest
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Resolve version
-        shell: pwsh
-        run: |
-          if ("${{ github.event_name }}" -eq "workflow_dispatch") { $version = "${{ inputs.version }}" }
-          elseif ("${{ github.ref_type }}" -eq "tag") { $version = "${{ github.ref_name }}" }
-          else { $version = "v1.0.0" }
-          "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-
-      - name: Install dependencies
+          python-version: '3.12'
+          cache: pip
+      - name: Install and test
         shell: pwsh
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pyinstaller opencv-python numpy ttkbootstrap Pillow
-
-      - name: Build English EXE
+          pip install -e ".[test]" pyinstaller
+          pytest -q
+          python tools/build_icon.py
+      - name: Resolve version
         shell: pwsh
         run: |
-          pyinstaller --noconfirm --clean --onefile --windowed --name "Watermark-Remover-Pro-ENG" --collect-all ttkbootstrap "watermark Eng.py"
-
-      - name: Build Polish EXE
+          if ("${{ github.ref_type }}" -eq "tag") { $version = "${{ github.ref_name }}" }
+          else { $raw = python -c "import watermark_remover; print(watermark_remover.__version__)"; $version = "v$raw" }
+          "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Build single multilingual EXE
         shell: pwsh
         run: |
-          pyinstaller --noconfirm --clean --onefile --windowed --name "Watermark-Remover-Pro-PL" --collect-all ttkbootstrap "watermark remover PL.py"
-
-      - name: Package release
+          pyinstaller --noconfirm --clean --onefile --windowed `
+            --name "WatermarkRemoverPro" `
+            --paths src `
+            --icon "assets/watermark-remover.ico" `
+            --collect-all ttkbootstrap `
+            --collect-all imageio_ffmpeg `
+            --add-data "assets/watermark-remover.svg;assets" `
+            main.py
+      - name: Smoke test artifact
         shell: pwsh
         run: |
-          @"
-          Use this software only on images you own or have permission to modify.
-          "@ | Set-Content "USAGE_NOTICE.txt"
+          if (!(Test-Path "dist/WatermarkRemoverPro.exe")) { throw "EXE missing" }
+          if ((Get-Item "dist/WatermarkRemoverPro.exe").Length -lt 1000000) { throw "EXE unexpectedly small" }
+      - name: Package and checksum
+        shell: pwsh
+        run: |
           $zip = "Watermark-Remover-Pro-$env:VERSION-Windows-x64.zip"
-          Compress-Archive -Path "dist/Watermark-Remover-Pro-ENG.exe", "dist/Watermark-Remover-Pro-PL.exe", "README.md", "USAGE_NOTICE.txt" -DestinationPath $zip -Force
-          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
-          "$hash  $zip" | Set-Content "$zip.sha256"
+          Copy-Item README.md, CHANGELOG.md, USAGE_NOTICE.txt dist/
+          Compress-Archive -Path "dist/WatermarkRemoverPro.exe", "dist/README.md", "dist/CHANGELOG.md", "dist/USAGE_NOTICE.txt" -DestinationPath $zip -Force
+          $exeHash = (Get-FileHash "dist/WatermarkRemoverPro.exe" -Algorithm SHA256).Hash.ToLower()
+          "$exeHash  WatermarkRemoverPro.exe" | Set-Content "dist/WatermarkRemoverPro.exe.sha256"
+          $zipHash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
+          "$zipHash  $zip" | Set-Content "$zip.sha256"
           "ZIP_NAME=$zip" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
       - name: Publish GitHub Release
-        shell: pwsh
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release view $env:VERSION --repo "${{ github.repository }}" *> $null
-          if ($LASTEXITCODE -eq 0) {
-            gh release upload $env:VERSION "dist/Watermark-Remover-Pro-ENG.exe" "dist/Watermark-Remover-Pro-PL.exe" "$env:ZIP_NAME" "$env:ZIP_NAME.sha256" --clobber --repo "${{ github.repository }}"
-          } else {
-            gh release create $env:VERSION "dist/Watermark-Remover-Pro-ENG.exe" "dist/Watermark-Remover-Pro-PL.exe" "$env:ZIP_NAME" "$env:ZIP_NAME.sha256" --target "${{ github.sha }}" --title "Watermark Remover Pro $env:VERSION" --generate-notes --repo "${{ github.repository }}"
-          }
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
+          name: Watermark Remover Pro ${{ env.VERSION }}
+          generate_release_notes: true
+          make_latest: true
+          files: |
+            dist/WatermarkRemoverPro.exe
+            dist/WatermarkRemoverPro.exe.sha256
+            ${{ env.ZIP_NAME }}
+            ${{ env.ZIP_NAME }}.sha256

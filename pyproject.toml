@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "swir-watermark-remover-pro"
+version = "2.0.0"
+description = "Desktop image/video restoration tool with region-based inpainting"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "Swir"}]
+dependencies = [
+  "numpy>=2.0,<3",
+  "opencv-python>=4.10,<5",
+  "Pillow>=10,<13",
+  "ttkbootstrap>=1.10,<2",
+  "imageio-ffmpeg>=0.5,<1",
+]
+
+[project.scripts]
+watermark-remover-pro = "watermark_remover.app:run"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<9"]
