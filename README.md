@@ -1,90 +1,111 @@
 <div align="center">
 
-# 🎥 Video Cleanup & Inpainting Tool
+<img src="assets/watermark-remover.svg" width="112" alt="Watermark Remover Pro icon">
 
-### Desktop Video Restoration Utility with Manual Masking, Inpainting & Batch Processing
+# Watermark Remover Pro v2
 
-**Python • OpenCV • FFmpeg • ttkbootstrap • Inpainting • Video Restoration**
+### Image & video restoration with selectable region inpainting
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white)
-![OpenCV](https://img.shields.io/badge/Vision-OpenCV-5C3EE8?logo=opencv&logoColor=white)
-![FFmpeg](https://img.shields.io/badge/Video-FFmpeg-007808?logo=ffmpeg&logoColor=white)
-![GUI](https://img.shields.io/badge/GUI-ttkbootstrap-8A2BE2)
-![Use](https://img.shields.io/badge/Use-Own%20%2F%20Authorized%20Media-success)
+**Python · OpenCV · ttkbootstrap · PL/EN · Windows EXE**
 
-</div>
-
----
-
-## 🚀 About
-
-This project is a desktop video cleanup and restoration utility for removing **unwanted visual overlays or damaged regions from video you own or are authorized to edit**. It combines manual region selection with OpenCV inpainting methods and optional post-processing controls.
-
-The application can process multiple files, preview the selected region and apply Telea, Navier-Stokes or adaptive blending-style cleanup workflows.
-
-It is designed for users searching for a **video inpainting tool**, **OpenCV video restoration GUI**, **video object cleanup Python**, **batch video cleanup app** or a desktop utility for restoring authorized footage.
-
----
-
-## ✨ Features
-
-| Feature | Description |
-|---|---|
-| 🎯 Manual region selection | Choose the area that should be reconstructed |
-| 🧠 Inpainting algorithms | Telea and Navier-Stokes based processing |
-| 🔀 Adaptive cleanup | Additional blend-oriented processing mode |
-| 📚 Batch processing | Process multiple video files |
-| 👁️ Live preview | Review the target region during setup/processing |
-| ✨ Sharpening | Optional post-processing |
-| 🧹 Denoising | Reduce visual noise where appropriate |
-| 🎨 Color correction | Optional output adjustment |
-| 🎬 FFmpeg workflow | Uses FFmpeg alongside Python image processing |
-
----
-
-## 📋 Requirements
-
-- Python 3.8+
-- FFmpeg available in `PATH`
-
-Install Python dependencies:
-
-```bash
-pip install opencv-python numpy pillow ttkbootstrap
-```
-
----
-
-## ▶️ Run
-
-```bash
-git clone https://github.com/Swir/watermark-remover.git
-cd watermark-remover
-python "watermark remover.py"
-```
-
----
-
-## 🔍 Discoverability
-
-`video inpainting python` • `opencv video restoration` • `video cleanup tool` • `remove unwanted overlay from own video` • `python video repair gui` • `batch video inpainting` • `ffmpeg opencv video tool` • `video object cleanup`
-
----
-
-## ⚖️ Responsible Use
-
-Use this project only on media you own or have permission to modify. Do not use it to remove ownership, attribution, provenance or rights-management marks from third-party content in ways that violate copyright, licensing or platform rules.
-
----
-
-## 👨‍💻 Author
-
-Developed by **Swir** — [@Swir](https://github.com/Swir)
-
-<div align="center">
-
-### 🎥 Select the region • Restore the frame • Process the video
-
-⭐ **Star the repository if it helps with legitimate video restoration!**
+[![CI](https://github.com/Swir/watermark-remover/actions/workflows/ci.yml/badge.svg)](https://github.com/Swir/watermark-remover/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Swir/watermark-remover)](https://github.com/Swir/watermark-remover/releases)
+[![Author](https://img.shields.io/badge/by-Swir-4cc9ff)](https://github.com/Swir)
 
 </div>
+
+Watermark Remover Pro is a desktop restoration tool for cleaning selected overlays, timestamps, labels, logos or damaged regions from **media you own or are authorized to edit**. It uses OpenCV inpainting to reconstruct pixels from the surrounding image. Results depend on scene complexity and the selected mask; it is a restoration tool, not a generative replacement system.
+
+## v2 modernization
+
+The previous repository maintained two almost identical ~46–47 KB applications, one Polish and one English. v2 replaces them with **one multilingual codebase and one Windows executable**.
+
+```text
+main.py
+src/watermark_remover/
+  app.py         desktop UI, batch queue, progress/cancel
+  engine.py      masks, inpainting, post-processing
+  video.py       image/video I/O and optional audio remux
+  models.py      areas and processing options
+  settings.py    persistent user settings
+  i18n.py        Polish/English translations
+assets/
+  watermark-remover.svg
+tools/
+  build_icon.py  Windows .ico generator
+```
+
+## Features
+
+- images: JPG, PNG, BMP, WebP, TIFF
+- videos: MP4, MOV, AVI, MKV, M4V, WebM input
+- manual multi-region selection on a preview frame
+- automatic top-left/top-right/bottom-left/bottom-right masks
+- adaptive texture-based method plus explicit Telea and Navier–Stokes modes
+- configurable inpaint radius, mask margin and edge feathering
+- optional denoise, sharpen and automatic contrast/color correction
+- batch queue with per-file state
+- progress indicator and cancellation
+- optional video audio preservation through FFmpeg
+- originals are never overwritten; outputs get `_restored`
+- PL/EN UI selected from the system locale with a manual switch
+- settings saved in the user's home profile, not next to the EXE
+- dedicated project icon and professional Windows Release pipeline
+
+## Requirements
+
+- Python 3.10–3.13
+- OpenCV 4.10+
+- NumPy 2.x
+- Pillow 10+
+- ttkbootstrap 1.x
+- imageio-ffmpeg 0.5+
+
+## Run from source
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+python -m pip install -U pip
+pip install -e .
+python main.py
+```
+
+On Linux/macOS use the platform's virtual-environment activation command.
+
+## Workflow
+
+1. Add one or more media files.
+2. Pick an output directory.
+3. Use **Preview / select areas** to draw one or more custom rectangles on the first file, and/or enable corner regions.
+4. Pick Adaptive/Telea/Navier–Stokes and optional post-processing.
+5. Start processing. For video, the app reports frame progress and can preserve audio when FFmpeg remuxing is available.
+
+Custom pixel rectangles are reused for batch items. If batch files have different dimensions/compositions, process them in separate groups or rely on proportional corner masks.
+
+## Quality notes
+
+OpenCV inpainting is strongest on small overlays over relatively continuous textures. Large masks over faces, complex text, motion or detailed geometry can produce visible artifacts. Start with the smallest practical mask and moderate radius.
+
+Video processing writes frames through OpenCV. MP4/MOV/M4V outputs optionally remux the original audio using `imageio-ffmpeg`; when remuxing is unavailable or fails, v2 safely falls back to the processed video stream rather than losing the whole job.
+
+## Tests
+
+```bash
+pip install -e ".[test]"
+pytest -q
+```
+
+CI validates the core on Python 3.10, 3.11, 3.12 and 3.13.
+
+## Release
+
+The Windows workflow builds a single `WatermarkRemoverPro.exe`, a portable ZIP and SHA256 checksums. A merge commit containing `[release]` publishes v2 automatically after tests pass.
+
+## Responsible use
+
+Use this software only on images/videos you created, own, or have permission to modify. Do not use it to misrepresent ownership or redistribute protected material without authorization.
+
+## Author
+
+Developed by **Swir** — https://github.com/Swir
