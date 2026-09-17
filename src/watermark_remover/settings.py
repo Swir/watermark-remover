@@ -21,12 +21,16 @@ class SettingsStore:
 
     def load(self) -> dict[str, Any]:
         defaults: dict[str, Any] = {
-            "language": detect_language(), "output_dir": str(Path.home() / "Videos"),
-            "last_options": asdict(ProcessingOptions()), "areas": [],
+            "language": detect_language(),
+            "output_dir": str(Path.home() / "Videos"),
+            "last_options": asdict(ProcessingOptions()),
+            "areas": [],
+            "corners": {"top_left": False, "top_right": False, "bottom_left": False, "bottom_right": True},
         }
         try:
             data = json.loads(self.path.read_text(encoding="utf-8"))
-            if isinstance(data, dict): defaults.update(data)
+            if isinstance(data, dict):
+                defaults.update(data)
         except (OSError, json.JSONDecodeError):
             pass
         return defaults
@@ -39,10 +43,16 @@ class SettingsStore:
 
     @staticmethod
     def areas_from(data: Any) -> list[Area]:
-        if not isinstance(data, list): return []
+        """Load current dictionary areas and classic [x, y, w, h] presets."""
+        if not isinstance(data, list):
+            return []
         result: list[Area] = []
         for item in data:
-            if isinstance(item, dict):
-                try: result.append(Area.from_dict(item))
-                except (TypeError, ValueError): continue
+            try:
+                if isinstance(item, dict):
+                    result.append(Area.from_dict(item))
+                elif isinstance(item, (list, tuple)) and len(item) >= 4:
+                    result.append(Area(int(item[0]), int(item[1]), int(item[2]), int(item[3])).normalized())
+            except (TypeError, ValueError):
+                continue
         return result
