@@ -42,12 +42,14 @@ jobs:
             --collect-all ttkbootstrap `
             --collect-all imageio_ffmpeg `
             --add-data "assets/watermark-remover.svg;assets" `
+            --add-data "assets/watermark-remover.ico;assets" `
             main.py
-      - name: Smoke test artifact
+      - name: Smoke test artifact and bundled icon
         shell: pwsh
         run: |
           if (!(Test-Path "dist/WatermarkRemoverPro.exe")) { throw "EXE missing" }
           if ((Get-Item "dist/WatermarkRemoverPro.exe").Length -lt 1000000) { throw "EXE unexpectedly small" }
+          if (!(Test-Path "assets/watermark-remover.ico")) { throw "Generated ICO missing" }
       - name: Package and checksum
         shell: pwsh
         run: |
