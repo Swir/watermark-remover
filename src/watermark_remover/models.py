@@ -49,6 +49,7 @@ class ProcessingOptions:
     radius: int = 7
     margin: int = 12
     feather: int = 5
+    smoothing: int = 0
     denoise: bool = False
     sharpen: bool = False
     color_correction: bool = False
@@ -67,6 +68,7 @@ class ProcessingOptions:
         self.feather = max(0, min(31, int(self.feather)))
         if self.feather % 2 == 0 and self.feather > 0:
             self.feather += 1
+        self.smoothing = max(0, min(31, int(self.smoothing)))
         if self.output_quality not in {"fast", "balanced", "high"}:
             self.output_quality = "high"
         if self.video_codec not in {"mp4v", "h264", "xvid"}:
