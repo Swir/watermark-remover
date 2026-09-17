@@ -54,6 +54,10 @@ class ProcessingOptions:
     color_correction: bool = False
     preserve_audio: bool = True
     output_quality: str = "high"
+    video_codec: str = "mp4v"
+    worker_count: int = 4
+    hardware_acceleration: bool = True
+    buffering: bool = True
 
     def validate(self) -> None:
         if self.method not in {"mixed", "telea", "ns"}:
@@ -65,6 +69,15 @@ class ProcessingOptions:
             self.feather += 1
         if self.output_quality not in {"fast", "balanced", "high"}:
             self.output_quality = "high"
+        if self.video_codec not in {"mp4v", "h264", "xvid"}:
+            self.video_codec = "mp4v"
+        self.worker_count = max(1, min(8, int(self.worker_count)))
+        self.hardware_acceleration = bool(self.hardware_acceleration)
+        self.buffering = bool(self.buffering)
+
+    def video_extension(self) -> str:
+        self.validate()
+        return ".avi" if self.video_codec == "xvid" else ".mp4"
 
 
 @dataclass(slots=True)
