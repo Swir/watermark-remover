@@ -54,6 +54,16 @@ def _sharpen(frame: np.ndarray) -> np.ndarray:
     return cv2.addWeighted(frame, 1.35, blur, -0.35, 0)
 
 
+def _smooth_repaired_region(frame: np.ndarray, mask: np.ndarray, strength: int) -> np.ndarray:
+    strength = max(0, min(31, int(strength)))
+    if strength <= 1:
+        return frame
+    filtered = cv2.bilateralFilter(frame, d=strength, sigmaColor=100, sigmaSpace=100)
+    alpha = (mask.astype(np.float32) / 255.0)[..., None]
+    blended = frame.astype(np.float32) * (1.0 - alpha) + filtered.astype(np.float32) * alpha
+    return np.clip(blended, 0, 255).astype(np.uint8)
+
+
 def process_frame(frame: np.ndarray, areas: Iterable[Area], options: ProcessingOptions) -> np.ndarray:
     if frame is None or frame.size == 0: raise ValueError("Frame is empty")
     options.validate(); areas = list(areas)
@@ -61,6 +71,7 @@ def process_frame(frame: np.ndarray, areas: Iterable[Area], options: ProcessingO
     mask = build_mask(frame.shape, areas, options.margin, options.feather)
     if not np.any(mask): return frame.copy()
     result = cv2.inpaint(frame, mask, float(options.radius), _choose_method(frame, mask, options.method))
+    result = _smooth_repaired_region(result, mask, options.smoothing)
     if options.denoise: result = cv2.fastNlMeansDenoisingColored(result, None, 3, 3, 7, 21)
     if options.sharpen: result = _sharpen(result)
     if options.color_correction: result = _auto_color_correct(result)
