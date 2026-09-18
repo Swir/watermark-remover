@@ -1,3 +1,11 @@
+<!-- SWIR-README-STANDARD:v2 -->
+
+<div align="center">
+
+<img width="100%" src="assets/readme/hero.svg" alt="Watermark Remover Pro — authorized image and video restoration with region inpainting" />
+
+</div>
+
 <div align="center">
 
 <img src="assets/watermark-remover.svg" width="112" alt="Watermark Remover Pro icon">
@@ -10,11 +18,25 @@
 
 [![CI](https://github.com/Swir/watermark-remover/actions/workflows/ci.yml/badge.svg)](https://github.com/Swir/watermark-remover/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Swir/watermark-remover)](https://github.com/Swir/watermark-remover/releases)
-[![Author](https://img.shields.io/badge/by-Swir-4cc9ff)](https://github.com/Swir)
+[![Author](https://img.shields.io/badge/by-Swir-02050A?style=flat-square&logo=github&logoColor=62E5FF)](https://github.com/Swir)
 
 </div>
 
 Watermark Remover Pro is a desktop restoration tool for cleaning selected overlays, timestamps, labels, logos or damaged regions from **media you own or are authorized to edit**. It uses OpenCV inpainting to reconstruct pixels from surrounding image information. Results depend on scene complexity and mask selection; this is a restoration tool, not a generative replacement system.
+
+## 📍 Project Status
+
+<img width="100%" src="assets/readme/progress-card.svg" alt="Watermark Remover Pro product progress — N/A because no authoritative product roadmap exists" />
+
+**Product progress:** **N/A** — the repository has releases and regression documentation, but no authoritative measurable product roadmap. Release version, test count and documentation state are not converted into an invented completion percentage.
+
+| Item | Status |
+|---|---|
+| Current line | v2.1 regression-recovery release |
+| Latest public release | [v2.1.0](https://github.com/Swir/watermark-remover/releases/tag/v2.1.0) |
+| CI matrix | Python 3.10–3.13 |
+| Windows artifacts | EXE + portable ZIP + SHA-256 assets |
+| Product roadmap | Not present |
 
 ## v2.1 regression recovery
 
@@ -84,7 +106,13 @@ tools/
 - ttkbootstrap 1.x
 - imageio-ffmpeg 0.5+
 
-## Run from source
+## Quick Start
+
+### Recommended Windows build
+
+Download the verified **v2.1.0** release from [GitHub Releases](https://github.com/Swir/watermark-remover/releases/tag/v2.1.0). The release provides `WatermarkRemoverPro.exe`, a Windows x64 portable ZIP and SHA-256 checksum assets.
+
+### Run from source
 
 ```bash
 python -m venv .venv
@@ -94,7 +122,7 @@ pip install -e .
 python main.py
 ```
 
-On Linux/macOS use the platform's virtual-environment activation command.
+On Linux/macOS use the platform's virtual-environment activation command. The repository CI currently verifies Python 3.10–3.13 on Ubuntu; the packaged public application is a Windows build.
 
 ## Workflow
 
@@ -124,7 +152,7 @@ v2.1 reads both the current dictionary-based area format and classic presets whe
 
 OpenCV inpainting is strongest on small overlays over relatively continuous textures. Large masks over faces, complex text, motion or detailed geometry can produce visible artifacts. Start with the smallest practical mask and moderate radius.
 
-The **Image output quality** setting now changes actual encoder parameters for JPEG, PNG and WebP instead of being a cosmetic setting. Video quality is governed primarily by the selected codec/backend.
+The **Image output quality** setting changes actual encoder parameters for JPEG, PNG and WebP. Video quality is governed primarily by the selected codec/backend.
 
 ## Tests
 
@@ -135,14 +163,34 @@ pytest -q
 
 CI validates the core on Python 3.10, 3.11, 3.12 and 3.13, including restored option validation, mask-local smoothing, image quality parameters, codec fallback order and the image pipeline.
 
+## 🗺️ Roadmap / Progress
+
+<img width="100%" src="assets/readme/progress-mini.svg" alt="Watermark Remover Pro compact product progress — N/A" />
+
+**Measured scope:** product roadmap · **Progress:** N/A · **Counter:** N/A — no canonical checklist or weighted roadmap exists.
+
+This documentation therefore separates known release state from unknown overall product completion.
+
 ## Release
 
-The Windows workflow runs tests, generates the custom icon, bundles that icon into the GUI, builds `WatermarkRemoverPro.exe`, performs an artifact smoke check, creates a portable ZIP and publishes SHA256 checksums. A merge commit containing `[release]` publishes the current version only after CI is green.
+The Windows workflow runs tests, generates the custom icon, bundles that icon into the GUI, builds `WatermarkRemoverPro.exe`, performs an artifact smoke check, creates a portable ZIP and publishes SHA-256 checksums. The latest verified public release is **v2.1.0**.
+
+[**Open GitHub Releases →**](https://github.com/Swir/watermark-remover/releases)
 
 ## Responsible use
 
 Use this software only on images/videos you created, own, or have permission to modify. Do not use it to misrepresent ownership or redistribute protected material without authorization.
 
-## Author
+## 🔎 Search Keywords
 
-Developed by **Swir** — https://github.com/Swir
+`watermark remover python` • `image inpainting desktop app` • `video inpainting tool` • `opencv region restoration` • `authorized media restoration` • `python image cleanup gui` • `tkinter ttkbootstrap image tool` • `batch image restoration` • `video overlay cleanup` • `telea inpainting` • `navier stokes inpainting` • `windows image restoration app` • `before after image preview` • `ffmpeg audio preservation`
+
+<div align="center">
+
+### `SELECT • RESTORE • VERIFY • EXPORT`
+
+Developed by **Swir** — [@Swir](https://github.com/Swir)
+
+[**← SWIR profile**](https://github.com/Swir) · [**All projects →**](https://github.com/Swir?tab=repositories)
+
+</div>
