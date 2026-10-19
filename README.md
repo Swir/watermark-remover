@@ -6,6 +6,12 @@
 
 </div>
 
+## 📸 Screenshot
+
+![watermark-remover application screenshot](docs/screenshots/application.jpg)
+
+Initial editor window on Windows, before importing media.
+
 <div align="center">
 
 <img src="assets/watermark-remover.svg" width="112" alt="Watermark Remover Pro icon">
